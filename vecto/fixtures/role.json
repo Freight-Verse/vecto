@@ -1,0 +1,80 @@
+[
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-09-15 23:50:00.837005",
+  "name": "Dispatcher",
+  "restrict_to_domain": null,
+  "role_name": "Dispatcher",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-09-15 23:50:00.844638",
+  "name": "Carrier Manager",
+  "restrict_to_domain": null,
+  "role_name": "Carrier Manager",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-09-15 23:50:00.856112",
+  "name": "TMS Admin",
+  "restrict_to_domain": null,
+  "role_name": "TMS Admin",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-09-15 23:50:00.866311",
+  "name": "TMS Finance",
+  "restrict_to_domain": null,
+  "role_name": "TMS Finance",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 0,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-09-15 23:50:02.650768",
+  "name": "TMS Customer",
+  "restrict_to_domain": null,
+  "role_name": "TMS Customer",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 0,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-09-15 23:50:02.675564",
+  "name": "TMS Carrier Portal",
+  "restrict_to_domain": null,
+  "role_name": "TMS Carrier Portal",
+  "two_factor_auth": 0
+ }
+]

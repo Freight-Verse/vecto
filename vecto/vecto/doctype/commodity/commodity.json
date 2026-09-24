@@ -1,0 +1,189 @@
+{
+ "name": "Commodity",
+ "autoname": "field:commodity_name",
+ "naming_rule": "By fieldname",
+ "title_field": "commodity_name",
+ "allow_rename": 1,
+ "allow_import": 1,
+ "search_fields": "nmfc_code,freight_class",
+ "field_order": [
+  "commodity_name",
+  "nmfc_code",
+  "column_break_1",
+  "freight_class",
+  "default_uom",
+  "hazmat_section",
+  "is_hazmat",
+  "hazmat_un_number",
+  "temp_section",
+  "requires_temp_control",
+  "temp_min",
+  "column_break_2",
+  "temp_max",
+  "notes_section",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "commodity_name",
+   "fieldtype": "Data",
+   "label": "Commodity Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "nmfc_code",
+   "fieldtype": "Data",
+   "label": "NMFC Code",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "freight_class",
+   "fieldtype": "Select",
+   "label": "Freight Class",
+   "options": "\n50\n55\n60\n65\n70\n77.5\n85\n92.5\n100\n110\n125\n150\n175\n200\n250\n300\n400\n500",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "default_uom",
+   "fieldtype": "Link",
+   "label": "Default UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "hazmat_section",
+   "fieldtype": "Section Break",
+   "label": "Hazmat"
+  },
+  {
+   "fieldname": "is_hazmat",
+   "fieldtype": "Check",
+   "label": "Is Hazmat",
+   "default": "0",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "hazmat_un_number",
+   "fieldtype": "Data",
+   "label": "Hazmat UN Number",
+   "depends_on": "eval:doc.is_hazmat"
+  },
+  {
+   "fieldname": "temp_section",
+   "fieldtype": "Section Break",
+   "label": "Temperature Control"
+  },
+  {
+   "fieldname": "requires_temp_control",
+   "fieldtype": "Check",
+   "label": "Requires Temp Control",
+   "default": "0"
+  },
+  {
+   "fieldname": "temp_min",
+   "fieldtype": "Float",
+   "label": "Temp Min",
+   "depends_on": "eval:doc.requires_temp_control"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "temp_max",
+   "fieldtype": "Float",
+   "label": "Temp Max",
+   "depends_on": "eval:doc.requires_temp_control"
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "TMS Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Dispatcher",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Carrier Manager",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "TMS Finance",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  }
+ ],
+ "actions": [],
+ "links": [],
+ "states": [],
+ "creation": "2026-09-15 12:00:00.000000",
+ "modified": "2026-09-15 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Vecto",
+ "engine": "InnoDB",
+ "doctype": "DocType",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
