@@ -56,8 +56,11 @@ doc_events = {
 
 # Scheduled Tasks
 # ---------------
+scheduler_events = {
+	"hourly": ["vecto.tasks.expire_pending_tenders"],
+}
 
-# scheduler_events = {
+# scheduler_events_template = {
 # 	"all": [
 # 		"vecto.tasks.all"
 # 	],
