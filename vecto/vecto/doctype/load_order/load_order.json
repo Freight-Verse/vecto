@@ -193,7 +193,8 @@
    "fieldtype": "Link",
    "label": "Assigned Carrier",
    "options": "Carrier",
-   "in_standard_filter": 1
+   "in_standard_filter": 1,
+   "allow_on_submit": 1
   },
   {
    "fieldname": "column_break_5",
@@ -233,7 +234,8 @@
   {
    "fieldname": "buy_rate",
    "fieldtype": "Currency",
-   "label": "Buy Rate"
+   "label": "Buy Rate",
+   "allow_on_submit": 1
   },
   {
    "fieldname": "fsc_buy",
@@ -262,13 +264,15 @@
    "fieldname": "total_sell",
    "fieldtype": "Currency",
    "label": "Total Sell",
-   "read_only": 1
+   "read_only": 1,
+   "allow_on_submit": 1
   },
   {
    "fieldname": "total_buy",
    "fieldtype": "Currency",
    "label": "Total Buy",
-   "read_only": 1
+   "read_only": 1,
+   "allow_on_submit": 1
   },
   {
    "fieldname": "column_break_7",
@@ -278,13 +282,15 @@
    "fieldname": "margin",
    "fieldtype": "Currency",
    "label": "Margin",
-   "read_only": 1
+   "read_only": 1,
+   "allow_on_submit": 1
   },
   {
    "fieldname": "margin_pct",
    "fieldtype": "Percent",
    "label": "Margin Pct",
-   "read_only": 1
+   "read_only": 1,
+   "allow_on_submit": 1
   },
   {
    "fieldname": "notes_section",
