@@ -4,7 +4,9 @@
 # Implements: Phase 2 — Trip
 
 from frappe.model.document import Document
+from frappe.utils import flt
 
 
 class Trip(Document):
-	pass
+	def validate(self):
+		self.total_miles = sum(flt(row.miles) for row in self.get("loads") or [])
