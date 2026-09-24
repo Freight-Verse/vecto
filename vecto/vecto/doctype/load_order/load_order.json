@@ -1,0 +1,395 @@
+{
+ "name": "Load Order",
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "shipper",
+ "is_submittable": 1,
+ "allow_import": 1,
+ "search_fields": "shipper,origin,destination,po_number,status",
+ "field_order": [
+  "naming_series",
+  "status",
+  "column_break_1",
+  "shipper",
+  "load_type",
+  "dispatcher",
+  "dates_section",
+  "pickup_date",
+  "column_break_2",
+  "delivery_date",
+  "po_number",
+  "freight_section",
+  "commodity",
+  "weight",
+  "column_break_3",
+  "pieces",
+  "lane_section",
+  "origin",
+  "column_break_4",
+  "destination",
+  "stops",
+  "assignment_section",
+  "assigned_carrier",
+  "column_break_5",
+  "assigned_driver",
+  "assigned_vehicle",
+  "rates_section",
+  "sell_rate",
+  "fsc_sell",
+  "column_break_6",
+  "buy_rate",
+  "fsc_buy",
+  "rate_override",
+  "accessorials",
+  "totals_section",
+  "total_sell",
+  "total_buy",
+  "column_break_7",
+  "margin",
+  "margin_pct",
+  "notes_section",
+  "notes",
+  "pod_signature",
+  "status_log_section",
+  "status_log",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "LOAD-.YYYY.-",
+   "reqd": 1,
+   "set_only_once": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Link",
+   "label": "Status",
+   "options": "Load Status",
+   "default": "Draft",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "allow_on_submit": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Link",
+   "label": "Shipper",
+   "options": "Shipper",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "load_type",
+   "fieldtype": "Select",
+   "label": "Load Type",
+   "options": "\nFTL\nLTL\nPartial",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "dispatcher",
+   "fieldtype": "Link",
+   "label": "Dispatcher",
+   "options": "User",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "dates_section",
+   "fieldtype": "Section Break",
+   "label": "Dates"
+  },
+  {
+   "fieldname": "pickup_date",
+   "fieldtype": "Date",
+   "label": "Pickup Date",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "delivery_date",
+   "fieldtype": "Date",
+   "label": "Delivery Date"
+  },
+  {
+   "fieldname": "po_number",
+   "fieldtype": "Data",
+   "label": "PO Number"
+  },
+  {
+   "fieldname": "freight_section",
+   "fieldtype": "Section Break",
+   "label": "Freight"
+  },
+  {
+   "fieldname": "commodity",
+   "fieldtype": "Link",
+   "label": "Commodity",
+   "options": "Commodity"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Float",
+   "label": "Weight"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pieces",
+   "fieldtype": "Int",
+   "label": "Pieces"
+  },
+  {
+   "fieldname": "lane_section",
+   "fieldtype": "Section Break",
+   "label": "Lane"
+  },
+  {
+   "fieldname": "origin",
+   "fieldtype": "Link",
+   "label": "Origin",
+   "options": "TMS Location",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Link",
+   "label": "Destination",
+   "options": "TMS Location",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "stops",
+   "fieldtype": "Table",
+   "label": "Stops",
+   "options": "Load Stop Detail"
+  },
+  {
+   "fieldname": "assignment_section",
+   "fieldtype": "Section Break",
+   "label": "Assignment"
+  },
+  {
+   "fieldname": "assigned_carrier",
+   "fieldtype": "Link",
+   "label": "Assigned Carrier",
+   "options": "Carrier",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "assigned_driver",
+   "fieldtype": "Link",
+   "label": "Assigned Driver",
+   "options": "TMS Driver"
+  },
+  {
+   "fieldname": "assigned_vehicle",
+   "fieldtype": "Link",
+   "label": "Assigned Vehicle",
+   "options": "TMS Vehicle"
+  },
+  {
+   "fieldname": "rates_section",
+   "fieldtype": "Section Break",
+   "label": "Rates"
+  },
+  {
+   "fieldname": "sell_rate",
+   "fieldtype": "Currency",
+   "label": "Sell Rate"
+  },
+  {
+   "fieldname": "fsc_sell",
+   "fieldtype": "Currency",
+   "label": "FSC Sell"
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "buy_rate",
+   "fieldtype": "Currency",
+   "label": "Buy Rate"
+  },
+  {
+   "fieldname": "fsc_buy",
+   "fieldtype": "Currency",
+   "label": "FSC Buy"
+  },
+  {
+   "fieldname": "rate_override",
+   "fieldtype": "Check",
+   "label": "Rate Override",
+   "default": "0",
+   "description": "Skip auto-rating and total/margin recompute"
+  },
+  {
+   "fieldname": "accessorials",
+   "fieldtype": "Table",
+   "label": "Accessorials",
+   "options": "Load Accessorial Detail"
+  },
+  {
+   "fieldname": "totals_section",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "total_sell",
+   "fieldtype": "Currency",
+   "label": "Total Sell",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_buy",
+   "fieldtype": "Currency",
+   "label": "Total Buy",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "margin",
+   "fieldtype": "Currency",
+   "label": "Margin",
+   "read_only": 1
+  },
+  {
+   "fieldname": "margin_pct",
+   "fieldtype": "Percent",
+   "label": "Margin Pct",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "pod_signature",
+   "fieldtype": "Attach",
+   "label": "POD Signature"
+  },
+  {
+   "fieldname": "status_log_section",
+   "fieldtype": "Section Break",
+   "label": "Status Log"
+  },
+  {
+   "fieldname": "status_log",
+   "fieldtype": "Table",
+   "label": "Status Log",
+   "options": "Load Status Log",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "options": "Load Order",
+   "read_only": 1,
+   "no_copy": 1,
+   "hidden": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "TMS Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Dispatcher",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "TMS Finance",
+   "read": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  }
+ ],
+ "actions": [],
+ "links": [],
+ "states": [],
+ "creation": "2026-09-25 00:00:00.000000",
+ "modified": "2026-09-25 00:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Vecto",
+ "engine": "InnoDB",
+ "doctype": "DocType",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
