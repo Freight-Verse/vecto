@@ -1,0 +1,164 @@
+{
+ "name": "Trip",
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "driver",
+ "allow_import": 1,
+ "search_fields": "driver,vehicle,trip_date,status",
+ "field_order": [
+  "naming_series",
+  "status",
+  "column_break_1",
+  "trip_date",
+  "driver",
+  "vehicle",
+  "loads_section",
+  "loads",
+  "totals_section",
+  "total_miles",
+  "notes_section",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "TRIP-.YYYY.-",
+   "reqd": 1,
+   "set_only_once": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Planned\nIn Progress\nCompleted",
+   "default": "Planned",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "trip_date",
+   "fieldtype": "Date",
+   "label": "Trip Date",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "TMS Driver",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "label": "Vehicle",
+   "options": "TMS Vehicle",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "loads_section",
+   "fieldtype": "Section Break",
+   "label": "Loads"
+  },
+  {
+   "fieldname": "loads",
+   "fieldtype": "Table",
+   "label": "Loads",
+   "options": "Trip Sheet Detail"
+  },
+  {
+   "fieldname": "totals_section",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "total_miles",
+   "fieldtype": "Float",
+   "label": "Total Miles",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "TMS Admin",
+   "read": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Dispatcher",
+   "read": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Carrier Manager",
+   "read": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  }
+ ],
+ "actions": [],
+ "links": [],
+ "states": [],
+ "creation": "2026-09-25 00:00:00.000000",
+ "modified": "2026-09-25 00:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Vecto",
+ "engine": "InnoDB",
+ "doctype": "DocType",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
