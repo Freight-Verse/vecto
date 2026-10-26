@@ -1,4 +1,9 @@
-# Vecto
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/vecto-readme-header-dark.svg">
+    <img alt="Vecto — the open-source TMS, built on Frappe and ERPNext" src=".github/assets/vecto-readme-header-light.svg" width="480">
+  </picture>
+</p>
 
 Vecto is an open-source Transportation Management System built as a Frappe app (`vecto`) on top of
 ERPNext, for brokers, shippers, carriers and 3PLs. It is **MCP-first**: every capability is an MCP

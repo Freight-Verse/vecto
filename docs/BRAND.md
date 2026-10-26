@@ -4,6 +4,13 @@
 open-source TMS. FreightVerse is monochrome; each product adds one accent. Vecto's accent is
 **signal orange**. Light and dark themes are equal; every token has both values.
 
+## Logos
+- **FreightVerse:** a ring with a product tile in orbit. **Vecto:** the signal-orange tile on its own.
+- Files: `docs/brand/vecto/` and `docs/brand/freightverse/` — `*-mark-*` and `*-lockup-*` in `light`, `dark`,
+  `mono-ink`, `mono-white`; Vecto web icons (`favicon.svg` adapts to dark mode, `favicon.ico`,
+  `apple-touch-icon-180.png`, `icon-512.png`, `og-image-1200x630.png`). Text is outlined Inter SemiBold.
+- Clear space: half the mark's height. Never recolour, stretch, rotate or add effects.
+
 ## Rules
 - Primary buttons are `primary` (ink in light, near-white in dark) — one per view, like Frappe UI.
 - `signal` only for: the Vecto mark, focus rings, the selected navigation marker, and Vecto Assistant (AI) actions. Never a status, never body text.
