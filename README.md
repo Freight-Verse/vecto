@@ -5,7 +5,7 @@ ERPNext, for brokers, shippers, carriers and 3PLs. It is **MCP-first**: every ca
 tool, and a built-in **chat prompt** lets users run the TMS by conversation as well as by forms.
 
 Status: design phase — see the [milestones](../../milestones) and `docs/FEATURE_MAP.md`.
-Maintainer: Anupam Kumar (@anupamvs). Contributions welcome — see `CONTRIBUTING.md`.
+Vecto is built by FreightVerse. Maintainer: Anupam Kumar (@anupamvs). Contributions welcome — see `CONTRIBUTING.md`.
 
 ## Read in this order
 
@@ -22,6 +22,7 @@ Maintainer: Anupam Kumar (@anupamvs). Contributions welcome — see `CONTRIBUTIN
 | `docs/integrations/` | Integration specs (carrier compliance, …) | Everyone |
 | `docs/API_STANDARDS.md` | REST, MCP, webhook rules | Everyone |
 | `docs/COMMUNITY.md` | How we grow contributors and users | Everyone |
+| `docs/BRAND.md` | FreightVerse and Vecto brand, light/dark design tokens | Everyone |
 | `docs/adr/` | Architecture decisions (why, not just what) | Everyone |
 | `docs/tasks/` | Task briefs Claude writes for Cursor, one per PR | Cursor |
 
