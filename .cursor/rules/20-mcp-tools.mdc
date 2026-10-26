@@ -1,0 +1,14 @@
+---
+description: Rules for MCP tools and the shared tool registry
+globs: ["vecto/mcp/**/*.py", "vecto/services/**/*.py"]
+alwaysApply: false
+---
+- Register tools only through vecto/mcp/registry.py. Never call frappe-mcp directly elsewhere.
+- Tool = thin adapter: validate input → call one service function → shape output. No rules inside.
+- Name: vecto_<noun>_<verb>. Docstring: when to use, when not to, what the output means.
+- Typed params with Google-style docstring Args; enums for statuses/modes; ISO 8601 datetimes.
+- Set readOnlyHint / destructiveHint / idempotentHint annotations.
+- Write tools: dry_run (default True) returns a preview; commit requires idempotency_key.
+- Output: ids + key fields + url; paginate lists (limit ≤ 50, cursor).
+- Errors: {code, message, hint}; no stack traces.
+- Add a contract test and a row in docs/MCP_AND_CHAT.md tool catalog for every new tool.

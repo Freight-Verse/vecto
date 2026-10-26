@@ -1,0 +1,5 @@
+# Internal, non-public material (strategy, market notes, customer info).
+# Kept in a separate private repository cloned into ./private — never commit it here.
+private/
+docs/private/
+*.private.md

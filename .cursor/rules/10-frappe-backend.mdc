@@ -1,0 +1,17 @@
+---
+description: Frappe/ERPNext backend conventions for Python and DocType JSON
+globs: ["vecto/**/*.py", "vecto/**/doctype/**/*.json"]
+alwaysApply: false
+---
+- Business logic goes in vecto/services/. Controllers (validate, on_submit…) call services.
+- Use frappe.qb or parameterised frappe.db.sql. Never format SQL strings.
+- Check permissions in services (frappe.has_permission / frappe.get_list). No ignore_permissions
+  without a comment citing an ADR.
+- Avoid N+1: fetch child/linked data in one query; use frappe.get_all with fields.
+- Money via flt(value, precision) and Currency fields; store weight/dims with UOM.
+- Load status changes ONLY via vecto/services/load_lifecycle.py.
+- Never compare against status names; use the status category (ADR-0006). Same for modes, event types, reasons.
+- Long work (> 2 s, external calls) → frappe.enqueue on the right queue; make jobs idempotent.
+- Add a patch in vecto/patches/ + patches.txt for schema/data changes on existing sites.
+- Raise frappe.ValidationError / frappe.PermissionError with clear, translatable messages (_()).
+- Tests: FrappeTestCase, create data via helpers, cover permission denial and failure paths.

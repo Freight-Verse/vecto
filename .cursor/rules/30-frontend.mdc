@@ -1,0 +1,12 @@
+---
+description: Vue 3 SPA and chat UI conventions
+globs: ["frontend/**/*.{vue,ts,js}"]
+alwaysApply: false
+---
+- Vue 3 Composition API + <script setup lang="ts">, Pinia for state. Stack per ADR-0004.
+- Use design tokens; no hard-coded colours/spacing. Support dark mode and keyboard navigation.
+- Tool results render as cards (LoadCard, CarrierCard, RateTable, Timeline, ConfirmCard).
+  Reuse existing cards before creating new ones.
+- Write actions from chat always show ConfirmCard (preview → Confirm/Edit/Cancel).
+- Realtime via Frappe socket.io events; handle reconnect and streaming partial messages.
+- Every screen has an empty state, loading state and error state.

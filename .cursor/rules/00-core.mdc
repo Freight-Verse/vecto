@@ -1,0 +1,10 @@
+---
+description: Core rules for Vecto — always applied
+alwaysApply: true
+---
+- Follow AGENTS.md at the repo root. It overrides anything here if they conflict.
+- Work only from a task brief in docs/tasks/. If none is given, ask for one.
+- Plan first: list the files you will touch and the service functions you will add, then implement.
+- Stay inside the brief's scope. Put anything else under "Open questions" in the PR.
+- Never add Co-authored-by / Made-with / any attribution trailer. Never change git user config.
+- Run tests before saying a task is done, and paste the result summary in the PR.
