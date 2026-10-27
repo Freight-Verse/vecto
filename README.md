@@ -39,4 +39,4 @@ Issue → task brief → implementation on a branch → CI → automated first-p
 ## Contributing, security, license
 - `CONTRIBUTING.md` — how to propose and build features (with or without AI agents)
 - `SECURITY.md` — report vulnerabilities privately
-- License: to be chosen before the first code release (tracked in an M0 issue)
+- License: **AGPL-3.0** — see `LICENSE`. Compatible with ERPNext (GPL-3.0); anyone running a modified Vecto as a service must share their changes.

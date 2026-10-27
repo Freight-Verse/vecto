@@ -1,5 +1,5 @@
 # ADR-0006: Configurable statuses, transitions and master data
-Status: Proposed · Date: 2026-10-26 · Decider: Anupam
+Status: **Accepted** (2026-10-28) · Proposed: 2026-10-26 · Decider: Anupam
 
 **Context.** Every broker, carrier and shipper names and orders their load stages differently, and
 needs different required steps. Hard-coded statuses force forks. Frappe CRM (Deal Status with a fixed

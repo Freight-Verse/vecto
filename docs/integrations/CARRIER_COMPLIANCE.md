@@ -41,11 +41,15 @@ BOC-3 on file · warn if authority age < configurable days.
 
 Optional commercial adapters later (fraud/identity, richer monitoring): Highway, RMIS, Carrier Assure.
 
-## Next regions (to confirm which ones the users operate in)
+## Next regions (confirmed order: Canada, Mexico, India, Europe/UK)
 - **Canada** — National Safety Code carrier profiles are issued by each province (e.g. Ontario CVOR);
   no single national API. Start with manual verification + document upload + expiry; add
   province adapters where an API or bulk source exists.
 - **Mexico** — SICT federal permits; start manual, research data sources.
+- **India** — carrier and vehicle documents (RC, permits, insurance, fitness), GST and e-way bill
+  references; start manual with document expiry tracking, then adapters where official APIs exist.
+- **Europe / UK** — national operator licences (e.g. UK O-licence) and EU community licences;
+  start manual, add adapters per country where public registers allow.
 - **Other regions** — added on demand with the same adapter interface.
 
 ## MCP tools

@@ -1,5 +1,5 @@
 # ADR-0001: Build Vecto as a Frappe app on ERPNext
-Status: Proposed · Date: 2026-10-26 · Decider: Anupam
+Status: **Accepted** (2026-10-28) · Proposed: 2026-10-26 · Decider: Anupam
 
 **Context.** We need a TMS with accounting, CRM-lite masters and multi-tenant hosting. ERPNext already
 provides Customer/Supplier/Item/Invoices/Payments, and Frappe sites are straightforward to host (self-hosted bench, Frappe Press, Frappe Cloud).

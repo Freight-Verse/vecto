@@ -1,5 +1,5 @@
 # ADR-0002: MCP-first with one shared tool registry
-Status: Proposed · Date: 2026-10-26 · Decider: Anupam
+Status: **Accepted** (2026-10-28) · Proposed: 2026-10-26 · Decider: Anupam
 
 **Context.** Users should run the TMS through an in-app chat and from external AI clients.
 Two tool definitions (one for chat, one for MCP) would drift.

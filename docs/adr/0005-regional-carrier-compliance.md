@@ -1,5 +1,5 @@
 # ADR-0005: Regional carrier compliance, FMCSA first
-Status: Proposed · Date: 2026-10-26 · Decider: Anupam
+Status: **Accepted** (2026-10-28) · Proposed: 2026-10-26 · Decider: Anupam
 
 **Context.** Carriers must be verified against the regulator of every region a load touches. Each
 region has a different regulator, identifier and data source (US: FMCSA with USDOT/MC numbers;

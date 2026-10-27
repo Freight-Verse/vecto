@@ -3,6 +3,10 @@
 Scope: a complete TMS — order management, dispatch, tendering, rating, tracking and billing for
 shippers, brokers, carriers and 3PLs. New rows are added through a `type:feature` issue.
 
+**First user (M1 MVP): freight brokers and 3PLs.** Carrier-fleet and shipper workflows follow.
+**Regions:** United States first; then Canada, Mexico, India, and Europe/UK — each through the
+regional compliance adapters (ADR-0005), local units, currencies, documents and EDI formats.
+
 Legend: P1 = MVP, P2 = next, P3 = later. "MCP" = tool(s) that must exist for the feature.
 
 | Area | Feature | Phase | MCP tools (indicative) |

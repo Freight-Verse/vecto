@@ -1,5 +1,5 @@
 # ADR-0003: Dry-run preview and confirmation for agent writes
-Status: Proposed · Date: 2026-10-26 · Decider: Anupam
+Status: **Accepted** (2026-10-28) · Proposed: 2026-10-26 · Decider: Anupam
 
 **Decision.** Write tools default to `dry_run=True` from chat; the UI shows a confirmation card;
 commit requires `dry_run=False` + `idempotency_key`. Background agents may auto-commit only actions
