@@ -6,7 +6,112 @@
 **Description:** A modern Transportation Management System covering freight brokerage, asset carrier operations, and 3PL logistics.  
 **Branch convention:** `develop` is the primary working branch.
 
+**License:** AGPL-3.0 (decided in #2)  
+**Target:** Frappe/ERPNext **v16 only** (ADR-0001) — no v15 support.
+
 > **ERPNext name collisions:** ERPNext already defines `Driver`, `Vehicle`, and `Location`. Vecto uses **`TMS Driver`**, **`TMS Vehicle`**, and **`TMS Location`** instead. All Link fields in this spec must point at those TMS names.
+
+---
+
+## Sources of Truth
+
+This file merges two plans:
+
+1. **This file**: the phase-by-phase field specs that the code on `develop` is built from.
+2. **GitHub `Freight-Verse/vecto` on `main`**: `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/MCP_AND_CHAT.md`, `docs/API_STANDARDS.md`, ADRs `docs/adr/0001–0006`, task briefs in `docs/tasks/`, and issues #1–#81.
+
+**Precedence:** an accepted ADR wins over this file. This file wins over a task brief where they disagree on **names** (see the Name Mapping below). For anything else, stop and ask Anupam.
+
+> `develop` and `main` currently have **no common git history**. Read docs on main with `git show origin/main:<path>`. Do not merge either branch into the other without Anupam's decision.
+
+---
+
+## Claude's Role & Authorship
+
+**Role**
+1. **Architect**: proposes changes as ADRs (`docs/adr/`). Anupam accepts or rejects them.
+2. **Planner**: turns an issue into a task brief (`docs/tasks/`, using `TEMPLATE.md`). The brief must be precise enough that Cursor can implement it without making design decisions.
+3. **Reviewer**: reviews every PR before Anupam merges it. Claude does not write feature code unless Anupam asks.
+
+**Authorship (non-negotiable; applies to Claude, Cursor and every other agent)**
+- Commits are authored by Anupam in his own git identity. Agents are never the author, a co-author or the reviewer of record.
+- **Never** add `Co-authored-by:`, `Reviewed-by:`, `Made-with:`, `Generated-by:` or any other attribution trailer to commits, PR titles or PR bodies. Never add "Generated with …" lines or tool links. This includes Cursor's automatic `Co-authored-by: Cursor` trailer, which must be turned off.
+- Never change `git config user.name` / `user.email`. Never request reviewers.
+- On GitHub, post review **comments** only. Never submit an "Approve" or "Request changes" review state. Agents do not merge; Anupam squash-merges.
+
+**Review checklist** (in order; stop at the first blocking failure)
+
+*Blocking*
+- [ ] Matches the task brief / phase spec scope; no features or refactors that weren't asked for.
+- [ ] Business logic lives in `services/`; controllers, `api/v1/` and MCP tools are thin.
+- [ ] Permissions are enforced in services; no `ignore_permissions` without a comment explaining why.
+- [ ] Load status changes go only through the lifecycle service; illegal transitions are rejected.
+- [ ] No hard-coded status names or other configurable vocabulary; rules use status **categories**.
+- [ ] Money, time zone and UOM rules are followed.
+- [ ] Write endpoints/tools support `dry_run` and `idempotency_key`; destructive ones are flagged.
+- [ ] No secrets, no raw string SQL, no N+1 queries in list endpoints.
+- [ ] Tests cover the failure paths, not only the happy path.
+- [ ] Patches exist for every schema/data change that existing sites need.
+- [ ] No attribution trailers; the commit author is a human.
+
+*Non-blocking* (comment, don't hold the PR): naming, readability, docstrings (they become LLM-facing tool descriptions), UI consistency, chances to delete code.
+
+**Review output:** Verdict `READY TO MERGE` / `CHANGES NEEDED` / `NEEDS DECISION` → findings as `file:line — problem — concrete fix`, most severe first → a short "Fix prompt for Cursor" block.
+
+---
+
+## Name Mapping (main plan ↔ this repo)
+
+Issues and task briefs on `main` use the names on the left. **Code on `develop` uses the names on the right, and those stay canonical.** Read every brief through this table.
+
+| main / issues | develop (canonical) | Notes |
+|---|---|---|
+| Load | Load Order | One doc = one move. A separate Shipment Order (1..n loads) is deferred until a customer needs it. |
+| Load Stop / Load Charge | Load Stop Detail / Load Accessorial Detail + rate fields | Child suffix stays `Detail`. |
+| Customer (ERPNext) | Shipper → `erpnext_customer` | Shipper is the TMS profile; ERPNext Customer stays the ledger party. |
+| Facility | TMS Location | Add `time_zone` (IANA) when appointments land (#79). |
+| Vecto Settings | TMS Settings | |
+| Carrier → Supplier | Carrier → `erpnext_supplier` | Same pattern. |
+| Driver / Equipment | TMS Driver / TMS Vehicle | |
+| Tracking Event | Load Event (Phase 6) + Load Status Log | Status changes write a Load Status Log row now and a Load Event once Phase 6 lands. |
+| `vecto/services/` | `vecto/services/` | **Adopted.** `vecto/utils/` is legacy; move its contents into services. |
+| Vecto Admin | TMS Admin | Roles: see the Roles table. |
+| Billing | TMS Finance | |
+
+---
+
+## Architecture Rules (from AGENTS.md / ARCHITECTURE.md)
+
+- **MCP-first, one brain:** each capability is **one service function** in `vecto/services/`. Desk controllers, `api/v1/` endpoints, MCP tools (`vecto/mcp/`, #7) and the Vue SPA (#9) are thin adapters over it.
+- **ERPNext is the ledger:** reuse Customer, Supplier, Address, Contact, Item, UOM, Currency, Sales/Purchase Invoice, Payment Entry, Company, Cost Center. Don't duplicate them.
+- **Human in the loop:** writes coming from chat/MCP default to `dry_run=True` and accept an `idempotency_key` (ADR-0003, #8). Errors are structured as `{code, message, hint}` (e.g. `TRANSITION_NOT_ALLOWED`, `CARRIER_NOT_COMPLIANT`).
+- **Everything is an event:** status changes, tender responses and check calls are immutable rows; status fields are projections of them.
+- **Configurable vocabulary (ADR-0006):** anything a user might rename (statuses, modes, equipment types, stop types, reasons, document types) is a DocType, and code never compares its names. Defaults are inserted by `install.py`, and by a patch for existing sites. Insert only if missing; never overwrite user edits; **never ship them as fixtures**. Fixtures are for config only (roles, workspace, print formats).
+- **Money:** `Currency` fields plus an explicit currency; use `flt(x, precision)` for totals in Python.
+- **Time & UOM:** datetimes are stored in system time as Frappe does; stops carry the location's time zone; weight/dimensions are always stored as value + UOM.
+- **Secrets:** Password fields on TMS Settings or `site_config`; never in code or fixtures.
+- **SQL:** `frappe.qb` or parameterised `frappe.db.sql`; never string concatenation.
+- **Integrations** (`vecto/integrations/`): one adapter per vendor behind an interface; timeout, retry with backoff, idempotency, request log. Tests never touch the real network.
+- **Background:** anything over 2 s runs on RQ; realtime updates use `frappe.publish_realtime`.
+
+---
+
+## Load Lifecycle — Status Categories (ADR-0006)
+
+`Load Status` rows are user data; **code only knows the fixed category list** (constant `STATUS_CATEGORIES` in `vecto/services/status.py`):
+
+```
+Draft → Planning → Tendering → Covered → Dispatched → In Transit → Delivered → Billing → Closed
+                       (any category before In Transit) → Cancelled
+```
+
+Fixed guards (enforced even when a transition row allows otherwise):
+1. A forward move may skip at most one category. Billing is reachable only from Delivered (or from Cancelled for a `billable_cancellation` status such as TONU); Closed is reachable only from Billing.
+2. Backward moves are allowed only Tendering → Planning (tender rejected/expired) and Covered → Planning (carrier fell off).
+3. Cancelled is reachable only before In Transit; nothing leaves Cancelled except to Billing via TONU.
+4. A move within the same category is allowed if a transition row exists.
+
+All status changes go through `vecto/services/load_lifecycle.py`: `allowed_transitions(load)` and `transition(load, to_status, *, reason=None, dry_run=False, idempotency_key=None, source="User")`. Transition rows (`Load Status Transition`: from/to, allowed roles, required fields, requires reason, condition, scoped by mode → customer) come with #6. Until then the service enforces the category guards alone. Business rules say "category is Delivered", never `status == "Delivered"`.
 
 ---
 
@@ -41,12 +146,12 @@ This project is built through a combination of three modes — understand which 
 | Controller logic (`doctype/<name>/<name>.py`) | **Cursor** |
 | Client scripts (`doctype/<name>/<name>.js`) | **Cursor** |
 | API endpoints (`api/v1/*.py`) | **Cursor** |
-| Utility / business logic (`utils/*.py`) | **Cursor** |
+| Business logic (`services/*.py`) | **Cursor** |
 | Bench commands (migrate, export-fixtures, install) | **Manual** (terminal) |
 | Workspace / Dashboard JSON | **Manual** (Frappe Desk UI → export) |
 | Print Format HTML/Jinja | **Cursor** |
 | Test files (`tests/test_*.py`) | **Cursor** |
-| Architecture decisions, phase specs, code review | **Claude (Cowork)** |
+| Architecture decisions (ADRs), task briefs, phase specs, code review | **Claude**: see Claude's Role above |
 
 **Cursor context tip:** When starting a new file in Cursor, paste the relevant Phase Requirements section from this file as a comment block at the top — it gives Cursor the full field spec, naming conventions, and business rules without re-explaining them.
 
@@ -79,10 +184,17 @@ vecto/
 │   │       ├── carriers.py        # Carrier-facing endpoints
 │   │       ├── quotes.py          # Quote / rating endpoints
 │   │       └── billing.py         # Invoice / settlement endpoints
-│   ├── utils/                     # Shared utility functions (internal, not whitelisted)
+│   ├── services/                  # Business rules: the ONLY place rules live (returns dict/list)
+│   ├── utils/                     # Legacy; move contents into services/ (no new code here)
+│   ├── mcp/                       # MCP tool registry + adapters, thin (#7)
+│   ├── integrations/              # Outbound vendor adapters (FMCSA, DAT, ELD, LLM…)
+│   ├── patches/                   # Data/schema patches for existing sites
 │   └── templates/                 # Jinja / web templates
+├── frontend/                      # Vue 3 + TypeScript + Frappe UI SPA at /vecto (ADR-0004, #9)
 └── pyproject.toml
 ```
+
+Later modules from the main plan (`carrier/`, `rating/`, `tracking/`, `billing/`, `edi/`, `agent/`) are added when their phase starts. Until then everything stays in the `Vecto` module.
 
 ---
 
@@ -93,7 +205,7 @@ vecto/
 - Line length ≤ 110 characters.
 - Controllers implement `validate` / `on_*` / `before_*` only. **Never** put `@frappe.whitelist()` on a doctype controller.
 - All server-side API functions exposed to the client live in `vecto/api/v1/` and must be decorated with `@frappe.whitelist()`.
-- Shared logic lives in `vecto/utils/` (or `vecto/services/`) and returns plain `dict` / `list` — not Document objects.
+- Business logic lives in `vecto/services/` and returns plain `dict` / `list`, not Document objects. Services check permissions (`frappe.has_permission` / `frappe.get_list`).
 - Never use bare `except:`; always catch specific exceptions or at minimum `except Exception as e`.
 - Use `frappe.db.get_value` / `frappe.db.get_all` / `frappe.db.set_value` for single-field reads/writes instead of loading the full document.
 - Use `frappe.get_doc` only when you need to trigger controller methods or validations.
@@ -101,7 +213,8 @@ vecto/
 - Dates stored as `Date`, datetimes as `Datetime`. Never store as string.
 - Use `frappe._()` for all user-facing strings (i18n).
 - Do not hard-code company name; always read from `frappe.defaults.get_global_default("company")` or pass as parameter.
-- `ignore_permissions` is allowed only in install/seed/migrate helpers.
+- `ignore_permissions` is allowed only in install/seed/migrate helpers, or with a comment explaining why.
+- Never hard-code status names or other configurable vocabulary outside `install.py`; use status categories.
 
 ### API Design
 - All public endpoints live under `vecto/api/v1/`. Never place whitelisted functions directly in doctype controllers or utils — they go in `api/v1/<resource>.py`.
@@ -111,6 +224,9 @@ vecto/
 - Future breaking changes introduce a new directory (`api/v2/`) — never change an existing v1 signature in a way that breaks callers; deprecate and add to v2 instead.
 - Every API function must validate its inputs explicitly (required fields, types) and raise `frappe.ValidationError` with a clear message on bad input — never let a KeyError or AttributeError bubble up to the caller.
 - Return value must always be a plain `dict` or `list`. Never return a Frappe document object directly.
+- Endpoints are thin: parse input → call one `services/` function → shape output. No business logic.
+- Write endpoints accept `dry_run` (returns a preview and writes nothing) and `idempotency_key` (a replay returns the first result). Errors that callers act on are `{code, message, hint}`.
+- Later (#63): versioned REST resources under `/api/v1/vecto/...` with a JSON envelope, cursor pagination and a generated OpenAPI 3.1 spec, built on the same services. The `vecto.api.v1.<module>.<fn>` method endpoints stay supported.
 - API functions that are public (no login required) must also pass `allow_guest=True` to `@frappe.whitelist()` and must authenticate via an API key header (`X-Vecto-Key`), checked with a helper in `vecto/api/v1/__init__.py`.
 
 **Endpoint naming convention:**
@@ -192,6 +308,8 @@ def get_load_status(load):
 
 ### Git
 - Commit message format: `feat(module): description` / `fix(module): description` / `docs(module):` / `chore:` / `test(module):`.
+- **No attribution trailers of any kind** (see Claude's Role & Authorship). CI will fail on them (#3).
+- PRs link the issue and the task brief, and aim for < 400 changed lines excluding generated DocType JSON.
 - **Commit after every feature.** Schema JSON and controller logic are **separate** commits.
 - Never commit compiled `__pycache__` or `.pyc` files (already in `.gitignore`).
 - Commit doctype JSON from the app tree after migrate / Desk save; use `export-fixtures` only for hooked fixtures.
@@ -209,6 +327,11 @@ def get_load_status(load):
 | `TMS Finance` | Freight Invoice, Carrier Settlement, Rate Sheet, Shipper (credit) |
 | `TMS Customer` | Portal-only: their own Load Orders and invoices (`desk_access=0`) |
 | `TMS Carrier Portal` | Portal-only: available loads, their own settlements (`desk_access=0`) |
+| `Account Manager` | *To add.* Customer sales: Shipper, Quote, Load Order (create/write) |
+| `Tracking Rep` | *To add.* Load Order read + stop actual times; Load Event (Phase 6) |
+| `Vecto Agent` | *To add with MCP (#7).* Service role for automation; never broader than the human it acts for |
+
+Main-plan role names map to these: Vecto Admin → `TMS Admin`, Billing → `TMS Finance`, Carrier (portal) → `TMS Carrier Portal`, Customer (portal) → `TMS Customer`, Dispatcher / Carrier Sales → `Dispatcher`.
 
 Define permissions on each doctype JSON — do not use `frappe.set_user_permissions` dynamically unless unavoidable.
 
@@ -229,6 +352,25 @@ Define permissions on each doctype JSON — do not use `frappe.set_user_permissi
 ---
 
 ## Phase Requirements
+
+**Phase ↔ GitHub issues**
+
+| Phase | Issues |
+|---|---|
+| 1 Foundation & masters | #4, part of #61 |
+| 2 Load management & dispatch | #5, #6, #23–#28, #30, #78 |
+| 3 Rating & quoting | #15–#18, #81 |
+| 4 Carrier compliance | #19–#22, #54–#60 (FMCSA first), #80 |
+| 5 Billing | #36–#39, #48, #53 |
+| 6 Track & trace, documents | #31–#35, #46, #47, #79 |
+| 7 Portals | #41, #42, #77 |
+| 8 Analytics, API, EDI, load boards | #43, #45, #49, #62–#67, #75 |
+| 9 More compliance regions | #44, #73 |
+| Track A: MCP + assistant (runs alongside phases 2–5) | #7, #8, #10–#14, #51, #76 |
+| Track B: SPA (blocked) | #9 |
+| Track C: DevOps & community | #3, #40, #50, #52, #68–#72, #74 |
+
+Before implementing an issue, it needs a task brief in `docs/tasks/` (`needs-brief` label). Issues labelled `agent:ready` already have one.
 
 ### Phase 1 — Foundation & Master Data
 **Goal:** Installable app with all master data forms, roles, and navigation.
@@ -342,7 +484,7 @@ Define permissions on each doctype JSON — do not use `frappe.set_user_permissi
 | default_company | Link | Company | ERPNext Company |
 | default_currency | Link | Currency | |
 | load_number_prefix | Data | default: LOAD |
-| auto_invoice_on_delivery | Check | Phase 5 — when set, Load Order status→Delivered triggers `create_freight_invoice` |
+| auto_invoice_on_delivery | Check | Phase 5 — when set, Load Order entering the **Delivered category** triggers `create_freight_invoice` |
 | fsc_update_frequency | Select | Daily\nWeekly\nManual |
 | default_freight_income_account | Link | Account | |
 | default_carrier_cost_account | Link | Account | |
@@ -366,13 +508,19 @@ Used as the **Link** target for `Load Order.status` (and `Load Status Log.status
 
 | fieldname | fieldtype | options / notes |
 |---|---|---|
-| status_name | Data | required, title_field, unique |
+| status_name | Data | required, title_field, unique; user-editable |
+| category | Select | Draft\nPlanning\nTendering\nCovered\nDispatched\nIn Transit\nDelivered\nBilling\nClosed\nCancelled. Required, fixed list (ADR-0006) |
+| is_default_for_category | Check | at most one per category; lifecycle moves use it to pick a status |
 | sequence | Int | required; dispatch board / workflow column order |
-| is_active | Check | default 1; inactive statuses hidden from new loads |
+| is_active | Check | default 1; inactive statuses hidden from new loads; the last active status of a category can't be disabled |
 | color | Select | Blue\nCyan\nGreen\nYellow\nOrange\nRed\nPink\nPurple\nGray | badge color |
+| customer_label | Data | shown on the customer portal; defaults to status_name |
+| carrier_label | Data | shown on the carrier portal; defaults to status_name |
+| billable_cancellation | Check | e.g. TONU; allows Cancelled → Billing |
+| edi_214_code | Data | optional, max 2 chars (Phase 8) |
 | description | Small Text | |
 
-**Default seeded statuses (sequence):** Draft (10), Quoting (20), Tendered (30), Confirmed (40), In Transit (50), Delivered (60), Invoiced (70), Cancelled (90).
+**Default seeded statuses (sequence → category):** Draft (10 → Draft), Quoting (20 → Planning), Tendered (30 → Tendering), Confirmed (40 → Covered), In Transit (50 → In Transit), Delivered (60 → Delivered), Invoiced (70 → Billing), Cancelled (90 → Cancelled). Each is the default for its category. Dispatched, Closed and TONU defaults are added with #6. Seed through `install.py` plus a patch, not fixtures.
 
 **Load Order** (`load_order`) — submittable, naming: `LOAD-.YYYY.-.#####`
 | fieldname | fieldtype | options / notes |
@@ -463,16 +611,15 @@ Used as the **Link** target for `Load Order.status` (and `Load Status Log.status
 | miles | Float |
 | sequence | Int |
 
-**Status workflow for Load Order:**
-`Draft → Quoting → Tendered → Confirmed → In Transit → Delivered → Invoiced → Cancelled`  
-(each name is a `Load Status` document; compare via Link name, e.g. `status == "Delivered"`)
+**Status workflow for Load Order:** the default statuses follow the category order in *Load Lifecycle — Status Categories* above. **Never compare status names in code.** Read the category (`frappe.db.get_value("Load Status", status, "category")`, or a fetched `status_category` field), and pick target statuses with `is_default_for_category`.
 
-**Controller logic** (`load_order.py`):
+**Controller logic** (`load_order.py` → calls `services/load.py` and `services/load_lifecycle.py`):
 - `validate()`: compute `total_sell`, `total_buy`, `margin`, `margin_pct` unless `rate_override` is set.
 - `on_update_after_submit()`: append a `Load Status Log` entry whenever `status` changes.
 - `before_submit()`: require at least one stop; require `shipper` and `origin` and `destination`.
+- Status changes on a saved load must come through the lifecycle service (`load.flags.via_lifecycle`). Setting `status` directly is rejected once #6 lands.
 
-**Tender creation:** Do **not** auto-create a Tender on Load Order `on_submit`. Submit only validates and moves the load into the workflow (typically status remains Draft/Quoting until a dispatcher acts). Create tenders via Desk action / API `tender_load(load_order, carrier, offered_rate)` when the dispatcher selects a carrier. Optional hook: when a Tender is Accepted, set Load Order status to Confirmed and copy carrier onto the load.
+**Tender creation:** Do **not** auto-create a Tender on Load Order `on_submit`. Submit only validates and moves the load into the workflow (the status stays in the Draft/Planning category until a dispatcher acts). Create tenders through the Desk action or the API `tender_load(load_order, carrier, offered_rate)` when the dispatcher selects a carrier; this moves the load to the default **Tendering** status. When a Tender is Accepted, move the load to the default **Covered** status through the lifecycle service and copy the carrier and buy rate onto the load. On reject or expiry, move it back to **Planning**.
 
 **Dispatch Board:** Custom page (`/vecto/dispatch`) rendering Load Orders grouped by status in Kanban columns. Filter bar: date range, dispatcher, carrier, load type. Each card shows: load name, shipper, origin → destination, carrier, status badge.
 
@@ -580,7 +727,7 @@ scheduler_events = {
 | load_order | Link | Load Order | filled when Won → Load Order created |
 | notes | Text | |
 
-**Rating engine** (`vecto/utils/rating.py`) — key function signature:
+**Rating engine** (`vecto/services/rating.py`) — key function signature:
 ```python
 def get_rate(origin_zip, origin_state, destination_zip, destination_state,
              equipment_type, mode, weight=None, shipper=None, carrier=None):
@@ -604,11 +751,11 @@ def get_rate(origin_zip, origin_state, destination_zip, destination_state,
 def get_rate(origin, destination, equipment_type, mode="FTL", weight=None, shipper=None):
     """Instant rate lookup for a lane.
     origin/destination = TMS Location names.
-    Resolves zip/state from each location, then calls vecto.utils.rating.get_rate(...).
+    Resolves zip/state from each location, then calls vecto.services.rating.get_rate(...).
     """
 ```
 
-The utils function takes zip/state; the API takes TMS Location names and adapts.
+The service function takes zip/state; the API takes TMS Location names and adapts.
 **Quote → Load Order:** Custom button "Create Load Order" on Quote (status = Won) → creates Load Order with all rate fields pre-filled, links back to quote.
 
 **Deliverable check:** Create a Rate Sheet with a lane, set an FSC table, create a Load Order on that lane — system populates sell/buy/margin automatically.
@@ -675,7 +822,9 @@ Status auto-logic: `Valid` if expiry > today+30; `Expiring` if today < expiry �
 | carrier_score | Percent | 50% OTD delivery + 30% OTD pickup + 20% (1−claims_rate) |
 | scorecard_updated_on | Datetime | |
 
-**Compliance gate** — add to `tender.py` → `validate()`:
+**Regional compliance (ADR-0005, #54–#60):** in addition to certificates, carriers are verified against the regulator of every region a load touches. That means Compliance Region, Carrier Regulatory ID (child of Carrier), Compliance Policy, Compliance Snapshot, and Compliance Event, with one adapter per provider in `vecto/integrations/compliance/` (`lookup`, `check`, `changes_since`). FMCSA (QCMobile + open data) is the first region. Each carrier gets a per-region status: Compliant / Warning / Blocked / Unverified. The gate runs on tender **and** dispatch, raises `CARRIER_NOT_COMPLIANT` with the failing rules as the hint, and allows an audited admin override per load.
+
+**Certificate gate** — implement in `services/compliance.py` and call it from `tender.py` → `validate()`:
 ```python
 required_cert_types = ["General Liability", "Cargo", "Authority"]
 expired = frappe.db.get_all(
@@ -863,7 +1012,7 @@ def add_load_event(load_order, event_type, notes=None, latitude=None, longitude=
 - `/invoices` — their Freight Invoices with download link
 
 **Carrier Portal pages:**
-- `/available-loads` — Load Orders with status `Tendered` and no carrier accepted yet (public load board)
+- `/available-loads` — Load Orders in the `Tendering` status category with no carrier accepted yet (public load board)
 - `/my-loads` — their accepted and in-progress loads
 - `/settlements` — their Carrier Settlements
 - `/onboarding` — Carrier Packet web form for self-service onboarding
@@ -901,7 +1050,7 @@ def add_load_event(load_order, event_type, notes=None, latitude=None, longitude=
 - Parser lives in `vecto/edi/` — each transaction set has its own module.
 
 **Load Board API integration:**
-- DAT API: post available loads (status = `Available`), pull spot rates for lane benchmarking
+- DAT API: post available loads (status category `Tendering`, not yet covered), pull spot rates for lane benchmarking
 - Truckstop API: same pattern
 - Configured in TMS Settings with API key fields
 
@@ -929,6 +1078,8 @@ Standard Frappe resource API (`/api/resource/Load Order/<name>`) remains availab
 ---
 
 ### Phase 9 (Future) — Regional Compliance App
+**Reconciled with ADR-0005:** the compliance **framework and the US/FMCSA adapter live in core** (Phase 4). Further regions (#44: Canada, Mexico, India, Europe/UK, in that order) and operational rules (IFTA, HOS, permits, tachograph) go in the separate `vecto_regional` app or per-region integration apps (#73), plugging into the core adapter interface.
+
 **Goal:** Separate Frappe app (`vecto_regional`) that extends Vecto with jurisdiction-specific compliance rules, without polluting the core app.
 
 **Why a separate app:** Regional rules vary widely and change frequently. Keeping them in a dedicated app means the core `vecto` app stays clean and region-agnostic — operators in different countries install only what applies to them.
@@ -975,6 +1126,21 @@ vecto_regional/
 - Regional fields stored in child doctypes linked to core doctypes — never patch core doctype JSON
 
 **When to build:** After Phase 6 is complete and the operator's jurisdiction(s) are confirmed. Build only the regions needed; the app is designed to be installed optionally.
+
+---
+
+## Known Gaps: develop vs this file
+
+The current code doesn't yet match the merged rules. Fix these in small PRs, each with a brief:
+
+- `hooks.py`: `app_license = "mit"` → `"agpl-3.0"`; add a `LICENSE` file.
+- `Load Status` has no `category`, `is_default_for_category`, labels or `billable_cancellation`; it is seeded via `fixtures/load_status.json` as well as `install.py`. Move seeding to `install.py` plus a patch and drop the fixture.
+- Hard-coded status names: `api/v1/loads.py` (`"Draft"`, `"Quoting"`, `"Tendered"`), `doctype/tender/tender.py` (`"Confirmed"`), `doctype/load_order/load_order.py` (`"Draft"`). Replace them with category lookups.
+- No `services/` package yet. Move `utils/load.py` into it and add `services/load_lifecycle.py` and `services/status.py`.
+- No `dry_run` / `idempotency_key` / `{code, message, hint}` errors on `tender_load`.
+- Missing roles: Account Manager, Tracking Rep, Vecto Agent.
+- No `patches/` for schema/data changes.
+- No `LICENSE`, `AGENTS.md` or `docs/` on `develop`; these exist only on `main`.
 
 ---
 
