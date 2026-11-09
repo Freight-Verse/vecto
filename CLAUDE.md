@@ -22,7 +22,7 @@ This file merges two plans:
 
 **Precedence:** an accepted ADR wins over this file. This file wins over a task brief where they disagree on **names** (see the Name Mapping below). For anything else, stop and ask Anupam.
 
-> `develop` and `main` currently have **no common git history**. Read docs on main with `git show origin/main:<path>`. Do not merge either branch into the other without Anupam's decision.
+> `develop` is based on `main`; the docs above are in this tree. Feature branches → PR into `main` → Anupam squash-merges.
 
 ---
 
@@ -1133,14 +1133,12 @@ vecto_regional/
 
 The current code doesn't yet match the merged rules. Fix these in small PRs, each with a brief:
 
-- `hooks.py`: `app_license = "mit"` → `"agpl-3.0"`; add a `LICENSE` file.
 - `Load Status` has no `category`, `is_default_for_category`, labels or `billable_cancellation`; it is seeded via `fixtures/load_status.json` as well as `install.py`. Move seeding to `install.py` plus a patch and drop the fixture.
 - Hard-coded status names: `api/v1/loads.py` (`"Draft"`, `"Quoting"`, `"Tendered"`), `doctype/tender/tender.py` (`"Confirmed"`), `doctype/load_order/load_order.py` (`"Draft"`). Replace them with category lookups.
 - No `services/` package yet. Move `utils/load.py` into it and add `services/load_lifecycle.py` and `services/status.py`.
 - No `dry_run` / `idempotency_key` / `{code, message, hint}` errors on `tender_load`.
 - Missing roles: Account Manager, Tracking Rep, Vecto Agent.
 - No `patches/` for schema/data changes.
-- No `LICENSE`, `AGENTS.md` or `docs/` on `develop`; these exist only on `main`.
 
 ---
 

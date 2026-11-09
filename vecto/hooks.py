@@ -3,7 +3,7 @@ app_title = "Vecto"
 app_publisher = "Freightverse"
 app_description = "A modern Transportation Management System built on Frappe — manage freight, shipments, carriers, and logistics operations end to end."
 app_email = "tech@freightverse.io"
-app_license = "mit"
+app_license = "agpl-3.0"
 
 # ERPNext is required (Company, Account, Payment Terms Template, Customer, Supplier, UOM).
 required_apps = ["erpnext"]
