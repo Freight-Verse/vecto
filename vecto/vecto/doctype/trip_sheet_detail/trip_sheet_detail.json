@@ -1,0 +1,61 @@
+{
+ "name": "Trip Sheet Detail",
+ "istable": 1,
+ "editable_grid": 1,
+ "field_order": [
+  "sequence",
+  "load_order",
+  "origin",
+  "destination",
+  "miles"
+ ],
+ "fields": [
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "label": "Sequence",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "load_order",
+   "fieldtype": "Link",
+   "label": "Load Order",
+   "options": "Load Order",
+   "in_list_view": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "origin",
+   "fieldtype": "Link",
+   "label": "Origin",
+   "options": "TMS Location",
+   "in_list_view": 1,
+   "fetch_from": "load_order.origin"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Link",
+   "label": "Destination",
+   "options": "TMS Location",
+   "in_list_view": 1,
+   "fetch_from": "load_order.destination"
+  },
+  {
+   "fieldname": "miles",
+   "fieldtype": "Float",
+   "label": "Miles",
+   "in_list_view": 1
+  }
+ ],
+ "permissions": [],
+ "actions": [],
+ "links": [],
+ "states": [],
+ "creation": "2026-09-25 00:00:00.000000",
+ "modified": "2026-09-25 00:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Vecto",
+ "engine": "InnoDB",
+ "doctype": "DocType"
+}

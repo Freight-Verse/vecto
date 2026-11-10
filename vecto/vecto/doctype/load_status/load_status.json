@@ -1,0 +1,132 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:status_name",
+ "naming_rule": "By fieldname",
+ "creation": "2026-09-16 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "status_name",
+  "sequence",
+  "column_break_1",
+  "is_active",
+  "color",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "status_name",
+   "fieldtype": "Data",
+   "label": "Status Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "label": "Sequence",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Workflow order for dispatch board columns"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Select",
+   "label": "Color",
+   "options": "\nBlue\nCyan\nGreen\nYellow\nOrange\nRed\nPink\nPurple\nGray",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  }
+ ],
+ "links": [],
+ "modified": "2026-09-16 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Vecto",
+ "name": "Load Status",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "TMS Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Dispatcher",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Carrier Manager",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "TMS Finance",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "sequence",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "status_name",
+ "track_changes": 1
+}

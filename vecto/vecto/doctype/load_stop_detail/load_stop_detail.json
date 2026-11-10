@@ -1,0 +1,77 @@
+{
+ "name": "Load Stop Detail",
+ "istable": 1,
+ "editable_grid": 1,
+ "field_order": [
+  "sequence",
+  "stop_type",
+  "location",
+  "scheduled_datetime",
+  "actual_datetime",
+  "contact_name",
+  "contact_phone",
+  "instructions"
+ ],
+ "fields": [
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "label": "Sequence",
+   "in_list_view": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "stop_type",
+   "fieldtype": "Select",
+   "label": "Stop Type",
+   "options": "Pickup\nDelivery\nStop",
+   "in_list_view": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Link",
+   "label": "Location",
+   "options": "TMS Location",
+   "in_list_view": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "scheduled_datetime",
+   "fieldtype": "Datetime",
+   "label": "Scheduled Datetime",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "actual_datetime",
+   "fieldtype": "Datetime",
+   "label": "Actual Datetime"
+  },
+  {
+   "fieldname": "contact_name",
+   "fieldtype": "Data",
+   "label": "Contact Name"
+  },
+  {
+   "fieldname": "contact_phone",
+   "fieldtype": "Phone",
+   "label": "Contact Phone"
+  },
+  {
+   "fieldname": "instructions",
+   "fieldtype": "Small Text",
+   "label": "Instructions"
+  }
+ ],
+ "permissions": [],
+ "actions": [],
+ "links": [],
+ "states": [],
+ "creation": "2026-09-25 00:00:00.000000",
+ "modified": "2026-09-25 00:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Vecto",
+ "engine": "InnoDB",
+ "doctype": "DocType"
+}

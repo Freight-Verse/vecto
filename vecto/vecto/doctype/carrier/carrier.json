@@ -1,0 +1,249 @@
+{
+ "name": "Carrier",
+ "autoname": "field:carrier_name",
+ "naming_rule": "By fieldname",
+ "title_field": "carrier_name",
+ "allow_rename": 1,
+ "allow_import": 1,
+ "search_fields": "mc_number,dot_number,city,state",
+ "field_order": [
+  "carrier_name",
+  "status",
+  "column_break_1",
+  "mc_number",
+  "dot_number",
+  "contact_section",
+  "contact_name",
+  "phone",
+  "column_break_2",
+  "email",
+  "address_section",
+  "address_line_1",
+  "address_line_2",
+  "city",
+  "column_break_3",
+  "state",
+  "zip_code",
+  "equipment_section",
+  "equipment_types",
+  "portal_section",
+  "portal_user",
+  "column_break_4",
+  "erpnext_supplier",
+  "notes_section",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "carrier_name",
+   "fieldtype": "Data",
+   "label": "Carrier Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nInactive\nDo Not Use",
+   "default": "Active",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mc_number",
+   "fieldtype": "Data",
+   "label": "MC #",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "dot_number",
+   "fieldtype": "Data",
+   "label": "DOT #",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "contact_section",
+   "fieldtype": "Section Break",
+   "label": "Contact"
+  },
+  {
+   "fieldname": "contact_name",
+   "fieldtype": "Data",
+   "label": "Primary Contact"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Phone",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "address_section",
+   "fieldtype": "Section Break",
+   "label": "Address"
+  },
+  {
+   "fieldname": "address_line_1",
+   "fieldtype": "Data",
+   "label": "Address Line 1"
+  },
+  {
+   "fieldname": "address_line_2",
+   "fieldtype": "Data",
+   "label": "Address Line 2"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State"
+  },
+  {
+   "fieldname": "zip_code",
+   "fieldtype": "Data",
+   "label": "ZIP"
+  },
+  {
+   "fieldname": "equipment_section",
+   "fieldtype": "Section Break",
+   "label": "Equipment"
+  },
+  {
+   "fieldname": "equipment_types",
+   "fieldtype": "Table",
+   "label": "Equipment Types",
+   "options": "Carrier Equipment Type Detail"
+  },
+  {
+   "fieldname": "portal_section",
+   "fieldtype": "Section Break",
+   "label": "Portal & ERPNext"
+  },
+  {
+   "fieldname": "portal_user",
+   "fieldtype": "Link",
+   "label": "Portal User",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "erpnext_supplier",
+   "fieldtype": "Link",
+   "label": "ERPNext Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "TMS Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Carrier Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Dispatcher",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "TMS Finance",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  }
+ ],
+ "actions": [],
+ "links": [],
+ "states": [],
+ "creation": "2026-09-15 12:00:00.000000",
+ "modified": "2026-09-15 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Vecto",
+ "engine": "InnoDB",
+ "doctype": "DocType",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

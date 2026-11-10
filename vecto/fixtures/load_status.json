@@ -1,0 +1,90 @@
+[
+ {
+  "color": "Gray",
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Load Status",
+  "is_active": 1,
+  "modified": "2026-09-16 00:05:12.070748",
+  "name": "Draft",
+  "sequence": 10,
+  "status_name": "Draft"
+ },
+ {
+  "color": "Blue",
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Load Status",
+  "is_active": 1,
+  "modified": "2026-09-16 00:05:12.073205",
+  "name": "Quoting",
+  "sequence": 20,
+  "status_name": "Quoting"
+ },
+ {
+  "color": "Cyan",
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Load Status",
+  "is_active": 1,
+  "modified": "2026-09-16 00:05:12.074334",
+  "name": "Tendered",
+  "sequence": 30,
+  "status_name": "Tendered"
+ },
+ {
+  "color": "Purple",
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Load Status",
+  "is_active": 1,
+  "modified": "2026-09-16 00:05:12.075710",
+  "name": "Confirmed",
+  "sequence": 40,
+  "status_name": "Confirmed"
+ },
+ {
+  "color": "Orange",
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Load Status",
+  "is_active": 1,
+  "modified": "2026-09-16 00:05:12.077037",
+  "name": "In Transit",
+  "sequence": 50,
+  "status_name": "In Transit"
+ },
+ {
+  "color": "Green",
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Load Status",
+  "is_active": 1,
+  "modified": "2026-09-16 00:05:12.078273",
+  "name": "Delivered",
+  "sequence": 60,
+  "status_name": "Delivered"
+ },
+ {
+  "color": "Yellow",
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Load Status",
+  "is_active": 1,
+  "modified": "2026-09-16 00:05:12.079583",
+  "name": "Invoiced",
+  "sequence": 70,
+  "status_name": "Invoiced"
+ },
+ {
+  "color": "Red",
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Load Status",
+  "is_active": 1,
+  "modified": "2026-09-16 00:05:12.080778",
+  "name": "Cancelled",
+  "sequence": 90,
+  "status_name": "Cancelled"
+ }
+]

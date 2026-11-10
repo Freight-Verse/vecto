@@ -36,6 +36,25 @@ Vecto is built by FreightVerse. Maintainer: Anupam Kumar (@anupamvs). Contributi
 Issue → task brief → implementation on a branch → CI → automated first-pass review comments
 → architecture review → fixes → maintainer squash-merges.
 
+## Installation
+
+Requires a Frappe/ERPNext **v16** bench.
+
+```bash
+cd $PATH_TO_YOUR_BENCH
+bench get-app https://github.com/Freight-Verse/vecto
+bench --site <site> install-app vecto
+```
+
+## Development
+
+This app uses `pre-commit` (ruff, eslint, prettier, pyupgrade). Install it and enable it in the repo:
+
+```bash
+cd apps/vecto
+pre-commit install
+```
+
 ## Contributing, security, license
 - `CONTRIBUTING.md` — how to propose and build features (with or without AI agents)
 - `SECURITY.md` — report vulnerabilities privately
