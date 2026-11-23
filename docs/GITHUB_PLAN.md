@@ -2,10 +2,10 @@
 
 This file is the source for everything created in GitHub: labels, milestones, the project board,
 epics and issues. Each `###` item below becomes one GitHub issue. "Brief" means Claude writes
-`docs/tasks/NNNN-*.md` before Cursor starts.
+`docs/tasks/NNNN-*.md` before implementation starts.
 
 ## Project board: "Vecto Roadmap" (GitHub Projects)
-Columns (Status): Backlog → Needs brief → Ready for Cursor → In progress → In review → Done
+Columns (Status): Backlog → Needs brief → Ready to build → In progress → In review → Done
 Fields: Phase (P0–P3), Area, Size (S/M/L), Priority (High/Med/Low), Task brief (text)
 Views: Board by Status · Table by Phase · Roadmap by Milestone
 
@@ -19,7 +19,7 @@ Views: Board by Status · Table by Phase · Roadmap by Milestone
 ## Milestones
 | Milestone | Goal |
 |---|---|
-| M0 Foundation | Repo, CI, app skeleton, core data model, lifecycle, tool registry, MCP endpoint |
+| M0 Foundation | Repo, CI, app skeleton, core data model, lifecycle, tool registry, MCP via Frappe's built-in server |
 | M1 MVP broker flow | Quote → load → tender → dispatch → track → POD → invoice, via forms, chat and MCP |
 | M2 Scale & automation | Portals, EDI, compliance, load boards, ELD tracking, freight audit, analytics |
 | M3 Advanced | Specialist agents, LTL/intermodal, claims, large-scale migration imports |
@@ -37,36 +37,42 @@ Views: Board by Status · Table by Phase · Roadmap by Milestone
 - Add LICENSE file and SPDX headers policy
 
 ### Repo & CI setup
-`type:chore` `area:devops` · S
-- Squash-merge only, branch protection on main, no CODEOWNERS (avoids automatic review requests)
+`type:chore` `area:devops` · S · brief 0004
+- Default branch `develop`; squash-merge only; branch protection on `develop` and `main`; no CODEOWNERS (avoids automatic review requests)
 - CI: ruff, eslint/prettier, `bench run-tests --app vecto`, `bench migrate` on fresh site
 - Attribution check (fails on bot authors or Co-authored-by/Reviewed-by/Made-with trailers)
 - Claude GitHub review workflow (read-only)
 
 ### App skeleton `vecto` on ERPNext
-`type:chore` `area:core` · S · brief 0000
+`type:chore` `area:core` · S · brief 0001
 - `bench new-app vecto`, required_apps erpnext, module folders per AGENTS.md, roles, Vecto Settings
 
 ### Load core data model
-`type:feature` `area:core` · M · brief 0001
+`type:feature` `area:core` · M · brief 0002
 - Shipment Order, Load, Load Stop, Load Commodity, Load Charge, Facility, Equipment Type
 - Time zone per facility, UOM on weight/dims, naming series
 
 ### Load lifecycle service
-`type:feature` `area:core` · M · brief 0002
+`type:feature` `area:core` · M · brief 0003
 - State machine in services/load_lifecycle.py, Tracking Event per transition, illegal-transition tests
 
-### Shared tool registry + MCP endpoint
-`type:feature` `area:mcp` · M · brief 0003
-- vecto/mcp/registry.py over frappe-mcp, OAuth2, Vecto Tool Call audit
-- First tools (read-only): `vecto_load_search`, `vecto_load_get`; contract tests
-- Verified from Claude Desktop
+### Tool registry + first Vecto methods (ADR-0007)
+`type:feature` `area:mcp` · M · brief 0005
+- `@vecto_tool` decorator in vecto/mcp/registry.py: whitelist, chat registration, Vecto Tool Call audit, error mapping
+- First read methods: `vecto.api.load.search`, `vecto.api.load.get`; contract tests
+- Verified from Claude Desktop through Frappe's built-in `/api/v2/mcp`
 
 ### Dry-run / idempotency framework for write tools
-`type:feature` `area:mcp` · S · brief 0004
+`type:feature` `area:mcp` · S · brief 0006
+- Preview/commit pattern, idempotency key store, first write method `vecto.api.load.transition`
+
+### Built-in MCP guards and agent setup
+`type:feature` `area:mcp` · S · brief 0007
+- Agent Instructions default, insert-only event/audit DocTypes, bypass tests through `/api/v2/mcp`
+- "Connect an AI client" doc (OAuth and API key)
 
 ### Design system & SPA shell at /vecto
-`type:feature` `area:ui` · M · brief 0005 · after ADR-0004
+`type:feature` `area:ui` · M · brief 0008 · after ADR-0004
 - Tokens, layout (nav · workspace · chat panel), auth, routing, empty/loading/error states
 
 ---
@@ -130,7 +136,7 @@ Views: Board by Status · Table by Phase · Roadmap by Milestone
 
 ### MVP end-to-end acceptance test
 `type:chore` · after all M1 epics
-- Full flow via forms, via chat, and via Claude Desktop MCP — recorded as a test script
+- Full flow via forms, via chat, and via Claude Desktop on Frappe's `/api/v2/mcp` — recorded as a test script
 
 ---
 

@@ -10,3 +10,7 @@ read from it. We wrap `frappe-mcp` because it is experimental and Tools-only tod
 
 **Consequences.** + One contract, tested once. + External agents get exactly what the chat gets.
 − Must keep the wrapper thin and track upstream changes.
+
+**Amended by ADR-0007 (2026-11-07).** The MCP endpoint and the `frappe-mcp` dependency are dropped:
+Frappe's built-in `/api/v2/mcp` serves MCP. The shared registry stays and now feeds the in-app chat,
+while external agents reach the same functions as whitelisted methods.

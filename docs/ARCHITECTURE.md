@@ -20,10 +20,10 @@ Status: Proposed (v0.1, 2026-10-26). Changes go through ADRs in `docs/adr/`.
             │ Vue SPA (/vecto)   Frappe Desk   │   │ Claude / Cursor / n8n   │
             │  ├ Workspace views               │   │ ChatGPT / custom        │
             │  └ Chat prompt ──► Vecto Agent   │   └───────────┬─────────────┘
-            └──────┬───────────────────┬───────┘               │ MCP (Streamable HTTP + OAuth2)
+            └──────┬───────────────────┬───────┘               │ Frappe MCP /api/v2/mcp → call_method
                    │ REST              │ in-process tool calls  │
             ┌──────▼──────┐     ┌──────▼──────────────────────▼──┐
-            │ api/ (thin) │     │ mcp/ tool adapters (thin)       │
+            │ api/ (thin) │     │ mcp/registry (@vecto_tool)      │
             └──────┬──────┘     └──────────────┬──────────────────┘
                    └──────────────┬────────────┘
                           ┌───────▼────────┐
@@ -37,7 +37,8 @@ Status: Proposed (v0.1, 2026-10-26). Changes go through ADRs in `docs/adr/`.
        Background: RQ workers (long, short, default) · Realtime: socket.io · Scheduler
 ```
 
-The chat agent calls the **same tool registry in-process** that the MCP server exposes over HTTP,
+MCP is served by Frappe's built-in server (ADR-0007): external agents call Vecto's whitelisted methods via
+`call_method`, and the chat agent calls the **same functions in-process** through the registry,
 so a tool that works in Claude Desktop works in the in-app chat, and vice versa.
 
 ## 3. Core data model (first cut)
@@ -89,7 +90,7 @@ Cancelled: Cancelled, TONU.
 
 Each transition row defines allowed roles, required fields/documents, a condition and auto-actions.
 The service enforces those rows plus fixed category guards, writes a Tracking Event, and fires hooks
-(notifications, EDI 214 out, portal update). Transitions are tools too (`vecto_load_transition`,
+(notifications, EDI 214 out, portal update). Transitions are tools too (`vecto.api.load.transition` / chat `vecto_load_transition`,
 takes a status name, always with `dry_run`). Each status has internal, customer and carrier labels.
 
 ## 5. Roles

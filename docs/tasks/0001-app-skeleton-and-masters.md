@@ -22,8 +22,9 @@ roles, settings and the first configurable masters every later task depends on.
 ### App
 - Create with `bench new-app vecto`: title **Vecto**, description "Open-source TMS built on Frappe and
   ERPNext", publisher **FreightVerse**, email hello@anupamvs.dev, license **agpl-3.0**.
+- `pyproject.toml`: `[tool.bench.frappe-dependencies]` `frappe = ">=16.54.0,<17.0.0"` and `erpnext = ">=16.0.0,<17.0.0"` (ADR-0007).
 - `hooks.py`: `required_apps = ["erpnext"]`, `app_license = "agpl-3.0"`, `after_install = "vecto.install.after_install"`.
-- Repo root keeps the existing docs, `LICENSE`, `.cursor/`, `.github/`. Do not overwrite them.
+- Repo root keeps the existing docs, `LICENSE`, `.claude/`, `.cursor/`, `.github/`, `CLAUDE.md`. Do not overwrite them.
 
 ### Modules (`modules.txt`) and package folders
 | Module | Folder | Purpose |
@@ -57,8 +58,6 @@ Vecto Admin · Dispatcher · Account Manager · Billing · Tracking Rep · Vecto
 | llm_model | Data | |
 | llm_api_key | Password | never returned by any API |
 | llm_base_url | Data | only for OpenAI-compatible |
-| section: MCP | Section Break | |
-| enable_mcp | Check | default 0 |
 
 Permissions: Vecto Admin read/write; System Manager read/write; others none.
 
@@ -90,7 +89,7 @@ Dispatcher and Account Manager can also create/write **Facility**.
 - `vecto.patches.v0_1.create_default_masters` → calls the same installer function.
 
 ## Acceptance criteria
-- [ ] `bench --site test_site install-app vecto` succeeds on a fresh v16 site with ERPNext.
+- [ ] `bench --site test_site install-app vecto` succeeds on a fresh Frappe ≥ 16.54 site with ERPNext v16.
 - [ ] Roles, Vecto Settings and all default master records exist after install.
 - [ ] Running the installer twice creates no duplicates and does not change edited records.
 - [ ] Facility with an invalid time zone or out-of-range coordinates is rejected with a clear message.
