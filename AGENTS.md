@@ -1,6 +1,6 @@
 # AGENTS.md — rules for every coding agent in this repo
 
-These rules apply to Cursor, Claude and any other agent. If a task brief conflicts with this file,
+These rules apply to Claude Code, Cursor, Claude and any other agent. If a task brief conflicts with this file,
 stop and ask; do not guess.
 
 ## 1. Authorship and review (non-negotiable)
@@ -11,8 +11,14 @@ stop and ask; do not guess.
 - Never change `git config user.name` / `user.email`. Never request reviewers on a PR.
 - Agents do not approve or merge. The maintainer (@anupamvs) merges with squash merge.
 
+## 1a. Branches
+- `develop` is the default and working branch. Every feature or fix branch starts from `develop`
+  and its PR targets `develop`.
+- `main` only receives releases: the maintainer merges `develop` into `main` when a version is cut.
+  Never open a feature PR against `main`.
+
 ## 2. What we are building
-- Frappe app name: `vecto`. Depends on `frappe` and `erpnext`. Target: **Frappe/ERPNext v16** only (no v15 support).
+- Frappe app name: `vecto`. Depends on `frappe` and `erpnext`. Target: **Frappe/ERPNext v16** only, minimum **16.54.0** (no v15 support).
 - Reuse ERPNext masters; do not duplicate them: Customer, Supplier, Address, Contact, Item, UOM,
   Currency, Sales Invoice, Purchase Invoice, Payment Entry, Company, Cost Center.
 - Every business capability is exposed through **one service function** and then adapted to
@@ -29,8 +35,8 @@ vecto/
   edi/                  # module: X12 204/990/214/210 and API connectors
   agent/                # module: chat, agent runs, tool-call audit
   services/             # business logic — the ONLY place rules live
-  mcp/                  # MCP server + tool adapters (thin)
-  api/                  # whitelisted REST adapters (thin)
+  mcp/                  # tool registry + @vecto_tool decorator (MCP is served by Frappe, ADR-0007)
+  api/                  # whitelisted methods = REST + MCP (via call_method) + chat tools (thin)
   integrations/         # outbound clients (load boards, tracking, LLM providers)
 frontend/               # Vue 3 SPA (workspace + chat), served at /vecto
 ```

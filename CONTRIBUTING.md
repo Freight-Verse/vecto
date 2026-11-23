@@ -8,7 +8,7 @@ Thanks for helping build an open-source, MCP-first TMS on Frappe/ERPNext.
   Larger changes need a task brief in `docs/tasks/` and, for design changes, an ADR in `docs/adr/`.
 
 ## Making a change
-1. Fork, then branch: `feat/<issue>-<slug>` or `fix/<issue>-<slug>`.
+1. Fork, then branch from `develop`: `feat/<issue>-<slug>` or `fix/<issue>-<slug>`. Open the PR against `develop`.
 2. Keep PRs small (< 400 changed lines excluding generated DocType JSON).
 3. Business logic in `vecto/services/`; MCP tools and REST endpoints stay thin.
 4. Add tests (service + MCP tool contract) and update docs/tool catalog.

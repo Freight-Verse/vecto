@@ -1,0 +1,12 @@
+---
+paths:
+  - "vecto/**/tests/**"
+  - "vecto/**/test_*.py"
+  - "frontend/**/*.spec.ts"
+---
+# Testing expectations
+
+- Each service function: happy path, permission denied, invalid input, idempotent replay (writes).
+- Each MCP tool: schema snapshot, dry-run vs commit, error code shape.
+- Load lifecycle: every allowed transition and at least one illegal transition per state.
+- Keep tests deterministic: freeze time, no real network (mock integrations/).

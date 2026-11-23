@@ -16,9 +16,9 @@ Vecto is built by FreightVerse. Maintainer: Anupam Kumar (@anupamvs). Contributi
 
 | File | What it is | Who reads it |
 |---|---|---|
-| `AGENTS.md` | Hard rules for every coding agent | Cursor, Claude, GitHub reviewer |
+| `AGENTS.md` | Hard rules for every coding agent | Claude Code, Cursor, GitHub reviewer |
 | `CLAUDE.md` | Claude's role: architect + reviewer, review checklist | Claude |
-| `.cursor/rules/*.mdc` | Scoped rules Cursor loads by file type | Cursor |
+| `.claude/rules/*.md` | Scoped rules Claude Code loads by path (mirrored in `.cursor/rules/` for Cursor users) | Claude Code |
 | `docs/ARCHITECTURE.md` | System design, layers, data model | Everyone |
 | `docs/FEATURE_MAP.md` | Feature scope + phased roadmap | Everyone |
 | `docs/GITHUB_PLAN.md` | Labels, milestones, board and seed issues | Maintainer |
@@ -29,7 +29,7 @@ Vecto is built by FreightVerse. Maintainer: Anupam Kumar (@anupamvs). Contributi
 | `docs/COMMUNITY.md` | How we grow contributors and users | Everyone |
 | `docs/BRAND.md` | FreightVerse and Vecto brand, light/dark design tokens | Everyone |
 | `docs/adr/` | Architecture decisions (why, not just what) | Everyone |
-| `docs/tasks/` | Task briefs Claude writes for Cursor, one per PR | Cursor |
+| `docs/tasks/` | Task briefs, one per PR | Claude Code |
 
 ## The loop in one line
 
